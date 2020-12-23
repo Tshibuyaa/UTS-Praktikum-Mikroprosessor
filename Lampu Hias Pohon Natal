@@ -1,0 +1,22 @@
+ Mov P0,#10101010B ; LED P0.1, P0.3, P0.5 dan P0.7 menyala (=0AAh)
+ Acall Delay  ; lakukan penundaan sesaat...
+ Mov P0,#01010101B ; LED P0.0, P0.2, P0.4 dan P0.6 menyala (=55h)
+ Acall Delay  ; lakukan penundaan sesaat...
+ Sjmp Mulai  ; ulangi lagi dari awal
+
+;-subrutin DELAY-----------------------------------------------------------
+;
+; subrutin ini hanya sekedar melakukan penundaan sesaat dengan cara
+; mengulangi proses (pengurangan isi register) hingga dicapai suatu
+; kondisi tertentu
+;
+;--------------------------------------------------------------------------
+DELAY:  MOV   R0,#1H            ; Isi Register R0 dengan 1 (1x ulang)
+DELAY1: MOV   R1,#1H           ; Isi Register R1 dengan 1 (15x ulang
+DELAY2: MOV   R2,#0             ; Isi register R2 dengan 0 (15x ulang)
+        DJNZ  R2,$              ; R2=R2-1, jika R2 belum 0 ulangi lagi
+        DJNZ  R1,DELAY2         ; R1=R1-1, jika R1 belum 0 ulangi DELAY2
+        DJNZ  R0,DELAY1         ; R0=R0-1, jika R0 belum 0 ulangi DELAY1
+        RET                     ; Kembali ke pemanggil subrutin DELAY
+
+END
